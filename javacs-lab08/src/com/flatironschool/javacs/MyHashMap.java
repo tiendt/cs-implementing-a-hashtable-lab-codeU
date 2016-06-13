@@ -1,31 +1,32 @@
 /**
- * 
+ *
  */
 package com.flatironschool.javacs;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Collection;
 
 /**
  * Implementation of a HashMap using a collection of MyLinearMap and
  * resizing when there are too many entries.
- * 
+ *
  * @author downey
  * @param <K>
  * @param <V>
  *
  */
 public class MyHashMap<K, V> extends MyBetterMap<K, V> implements Map<K, V> {
-	
+
 	// average number of entries per map before we rehash
 	protected static final double FACTOR = 1.0;
 
 	@Override
 	public V put(K key, V value) {
 		V oldValue = super.put(key, value);
-		
+
 		//System.out.println("Put " + key + " in " + map + " size now " + map.size());
-		
+
 		// check if the number of elements per map exceeds the threshold
 		if (size() > maps.size() * FACTOR) {
 			rehash();
@@ -37,11 +38,19 @@ public class MyHashMap<K, V> extends MyBetterMap<K, V> implements Map<K, V> {
 	 * Doubles the number of maps and rehashes the existing entries.
 	 */
 	/**
-	 * 
+	 *
 	 */
 	protected void rehash() {
-        // TODO: fill this in.
-        throw new UnsupportedOperationException();
+    // TODO: fill this in.
+		List<MyLinearMap<K, V>> prevMaps = maps;
+		makeMaps (maps.size() *2);
+
+		for (MyLinearMap<K,V> prevMap: prevMaps) {
+			Collection<? extends java.util.Map.Entry<K, V>> entries = prevMap.getEntries();
+			for (Map.Entry <K,V> entry: entries) {
+				put (entry.getKey(), entry.getValue());
+			}
+		}
 	}
 
 	/**
